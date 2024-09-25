@@ -9,5 +9,5 @@ class Company extends Model
 {
     use HasFactory;
     
-    protected $fillable = ['company_name'];
+    protected $fillable = ['company_name',];
 }

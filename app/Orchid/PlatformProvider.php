@@ -79,16 +79,11 @@ class PlatformProvider extends OrchidServiceProvider
                 ->divider(),
 
             Menu::make('Documentation')
-                ->title('Docs')
-                ->icon('bs.box-arrow-up-right')
-                ->url('https://orchid.software/en/docs')
-                ->target('_blank'),
+                ->title('Workflow')
+                ->icon('bs.briefcase'),
 
             Menu::make('Changelog')
-                ->icon('bs.box-arrow-up-right')
-                ->url('https://github.com/orchidsoftware/platform/blob/master/CHANGELOG.md')
-                ->target('_blank')
-                ->badge(fn () => Dashboard::version(), Color::DARK),
+                ->icon('bs.bank'),
         ];
     }
 
