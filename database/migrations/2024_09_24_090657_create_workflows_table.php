@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('workflows', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('status');
+            $table->integer('status')->default(0);
             $table->string('channel');
             $table->foreignId('company_id')->constrained()->onDelete('cascade');
             $table->timestamps();

@@ -19,6 +19,8 @@ use App\Orchid\Screens\Role\RoleListScreen;
 use App\Orchid\Screens\User\UserEditScreen;
 use App\Orchid\Screens\User\UserListScreen;
 use App\Orchid\Screens\User\UserProfileScreen;
+use App\Orchid\Screens\Workflow\WorkflowEditScreen;
+use App\Orchid\Screens\Workflow\WorkflowListScreen;
 use Illuminate\Support\Facades\Route;
 use Tabuna\Breadcrumbs\Trail;
 
@@ -122,4 +124,24 @@ Route::screen('companies/{company}/edit', CompanyEditScreen::class)
     ->name('platform.systems.companies.edit')
     ->breadcrumbs(fn(Trail $trail, $company) => $trail
         ->parent('platform.systems.companies')
-        ->push($company->name, route('platform.systems.companies.edit', $company)));
+        ->push($company->company_name, route('platform.systems.companies.edit', $company)));
+
+
+
+Route::screen('workflows', WorkflowListScreen::class)
+    ->name('platform.systems.workflows')
+    ->breadcrumbs(fn(Trail $trail) => $trail
+        ->parent('platform.index')
+        ->push(__('Workflow'), route('platform.systems.workflows')));
+
+Route::screen('workflows/create', WorkflowEditScreen::class)
+    ->name('platform.systems.workflows.create')
+    ->breadcrumbs(fn(Trail $trail) => $trail
+        ->parent('platform.systems.workflows')
+        ->push(__('Create'), route('platform.systems.workflows.create')));
+
+Route::screen('workflows/{workflow}/edit', WorkflowEditScreen::class)
+    ->name('platform.systems.workflows.edit')
+    ->breadcrumbs(fn(Trail $trail, $workflow) => $trail
+        ->parent('platform.systems.workflows')
+        ->push($workflow->name, route('platform.systems.workflows.edit', $workflow)));

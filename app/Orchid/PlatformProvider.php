@@ -78,12 +78,14 @@ class PlatformProvider extends OrchidServiceProvider
                 ->permission('platform.systems.roles')
                 ->divider(),
 
-            Menu::make('Documentation')
-                ->title('Workflow')
-                ->icon('bs.briefcase'),
+            Menu::make('Workflow')
+                ->title('Job')
+                ->icon('bs.briefcase')
+                ->route('platform.systems.workflows'),
 
-            Menu::make('Changelog')
-                ->icon('bs.bank'),
+            Menu::make('Company')
+                ->icon('bs.bank')
+                ->route('platform.systems.companies'),
         ];
     }
 

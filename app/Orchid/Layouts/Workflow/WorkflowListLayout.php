@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Orchid\Layouts\Company;
+namespace App\Orchid\Layouts\Workflow;
 
-use App\Models\Company;
+use App\Models\Workflow;
 use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\TD;
 use Orchid\Screen\Components\Cells\DateTimeSplit;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\DropDown;
 use Orchid\Screen\Actions\Link;
-
-class CompanyListLayout extends Table
+class WorkflowListLayout extends Table
 {
     /**
      * Data source.
@@ -20,7 +19,7 @@ class CompanyListLayout extends Table
      *
      * @var string
      */
-    protected $target = 'companies';
+    protected $target = 'workflows';
 
     /**
      * Get the table cells to be displayed.
@@ -29,18 +28,25 @@ class CompanyListLayout extends Table
      */
     protected function columns(): iterable
     {
+        // dd((fn(Workflow $workflow) => $workflow->companyName->company_name));
         return [
-            TD::make('company_name', __('Name'))
+            TD::make('name', __('Name'))
                 ->sort()
                 ->cantHide()
-                ->render(fn(Company $company) => $company->company_name),
-
+                ->render(fn(Workflow $workflow) => $workflow->name),
+            TD::make('channel', __('Channel'))
+                ->sort()
+                ->cantHide()
+                ->render(fn(Workflow $workflow) => $workflow->channel),
+            TD::make('company_id', __('Company'))
+                ->sort()
+                ->cantHide()
+                ->render(fn(Workflow $workflow) => $workflow->companyName->company_name),
             TD::make('created_at', __('Created'))
                 ->usingComponent(DateTimeSplit::class)
                 ->align(TD::ALIGN_RIGHT)
                 ->defaultHidden()
                 ->sort(),
-
             TD::make('updated_at', __('Last edit'))
                 ->usingComponent(DateTimeSplit::class)
                 ->align(TD::ALIGN_RIGHT)
@@ -48,18 +54,18 @@ class CompanyListLayout extends Table
             TD::make(__('Actions'))
                 ->align(TD::ALIGN_CENTER)
                 ->width('100px')
-                ->render(fn(Company $company) => DropDown::make()
+                ->render(fn(Workflow $workflow) => DropDown::make()
                     ->icon('bs.three-dots-vertical')
                     ->list([
                         Link::make(__('Edit'))
-                            ->route('platform.systems.companies.edit', $company->id)
+                            ->route('platform.systems.workflows.edit', $workflow->id)
                             ->icon('bs.pencil'),
 
                         Button::make(__('Delete'))
                             ->icon('bs.trash3')
                             ->confirm(__('Are you sure delete?'))
                             ->method('remove', [
-                                'id' => $company->id,
+                                'id' => $workflow->id,
                             ]),
                     ])),
         ];

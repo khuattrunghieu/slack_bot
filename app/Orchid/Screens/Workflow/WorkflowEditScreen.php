@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Orchid\Screens\Company;
+namespace App\Orchid\Screens\Workflow;
 
-use App\Models\Company;
-use App\Orchid\Layouts\Company\CompanyEditLayout;
+use App\Models\Workflow;
+use App\Orchid\Layouts\Workflow\WorkflowEditLayout;
 use Orchid\Screen\Screen;
 use Orchid\Screen\Actions\Button;
 use Orchid\Support\Facades\Layout;
@@ -11,18 +11,18 @@ use Orchid\Support\Facades\Toast;
 use Illuminate\Http\Request;
 
 
-class CompanyEditScreen extends Screen
+class WorkflowEditScreen extends Screen
 {
     /**
      * Fetch data to be displayed on the screen.
      *
      * @return array
      */
-    public $company;
-    public function query(Company $company): iterable
+    public $workflow;
+    public function query(Workflow $workflow): iterable
     {
         return [
-            'company' => $company,
+            'workflow' => $workflow,
         ];
     }
 
@@ -33,7 +33,7 @@ class CompanyEditScreen extends Screen
      */
     public function name(): ?string
     {
-        return $this->company->exists ? 'Edit Company' : 'Create Company';
+        return $this->workflow->exists ? 'Edit Workflow' : 'Create Workflow';
     }
 
     /**
@@ -51,7 +51,7 @@ class CompanyEditScreen extends Screen
             Button::make(__('Remove'))
                 ->icon('bs.trash3')
                 ->method('remove')
-                ->canSee($this->company->exists),
+                ->canSee($this->workflow->exists),
         ];
     }
 
@@ -64,24 +64,23 @@ class CompanyEditScreen extends Screen
     {
         return [
             Layout::block([
-                CompanyEditLayout::class,
+                WorkflowEditLayout::class,
             ])
-                ->title('Company')
-                ->description('Edit company'),
+                ->title('Workflow')
+                ->description('Edit Workflow'),
         ];
     }
-
-    public function save(Request $request, Company $company)
+    public function save(Request $request, Workflow $workflow)
     {
-        $company->forceFill($request->get('company'))->save();
-        Toast::info(__('Company was saved'));
-        return redirect()->route('platform.systems.companies');
+        $workflow->forceFill($request->get('workflow'))->save();
+        Toast::info(__('Workflow was saved'));
+        return redirect()->route('platform.systems.workflows');
     }
 
-    public function remove(Company $company)
+    public function remove(Workflow $workflow)
     {
-        $company->delete();
-        Toast::info(__('Company was removed'));
-        return redirect()->route('platform.systems.companies');
+        $workflow->delete();
+        Toast::info(__('Workflow was removed'));
+        return redirect()->route('platform.systems.workflows');
     }
 }

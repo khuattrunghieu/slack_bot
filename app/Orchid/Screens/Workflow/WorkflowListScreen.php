@@ -2,7 +2,12 @@
 
 namespace App\Orchid\Screens\Workflow;
 
+use App\Models\Workflow;
+use App\Orchid\Layouts\Workflow\WorkflowListLayout;
 use Orchid\Screen\Screen;
+use Orchid\Screen\Actions\Link;
+use Illuminate\Http\Request;
+use Orchid\Support\Facades\Toast;
 
 class WorkflowListScreen extends Screen
 {
@@ -13,7 +18,9 @@ class WorkflowListScreen extends Screen
      */
     public function query(): iterable
     {
-        return [];
+        return [
+            'workflows' => Workflow::orderBy('id', 'desc')->paginate(),
+        ];
     }
 
     /**
@@ -23,7 +30,7 @@ class WorkflowListScreen extends Screen
      */
     public function name(): ?string
     {
-        return 'WorkflowListScreen';
+        return 'Workflow List';
     }
 
     /**
@@ -33,7 +40,11 @@ class WorkflowListScreen extends Screen
      */
     public function commandBar(): iterable
     {
-        return [];
+        return [
+            Link::make(__('Add'))
+                ->icon('bs.plus-circle')
+                ->href(route('platform.systems.workflows.create')),
+        ];
     }
 
     /**
@@ -43,6 +54,14 @@ class WorkflowListScreen extends Screen
      */
     public function layout(): iterable
     {
-        return [];
+        return [
+            WorkflowListLayout::class,
+        ];
+    }
+    public function remove(Request $request,Workflow $workflow)
+    {
+        $workflow->findOrFail($request->input('id'))->delete();
+        Toast::info(__('Workflow was removed'));
+        return redirect()->route('platform.systems.workflows');
     }
 }

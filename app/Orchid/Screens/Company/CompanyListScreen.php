@@ -6,7 +6,8 @@ use App\Models\Company;
 use App\Orchid\Layouts\Company\CompanyListLayout;
 use Orchid\Screen\Screen;
 use Orchid\Screen\Actions\Link;
-
+use Orchid\Support\Facades\Toast;
+use Illuminate\Http\Request;
 
 class CompanyListScreen extends Screen
 {
@@ -56,5 +57,11 @@ class CompanyListScreen extends Screen
         return [
             CompanyListLayout::class,
         ];
+    }
+    public function remove(Request $request,Company $company)
+    {
+        $company->findOrFail($request->input('id'))->delete();
+        Toast::info(__('Company was removed'));
+        return redirect()->route('platform.systems.companies');
     }
 }
