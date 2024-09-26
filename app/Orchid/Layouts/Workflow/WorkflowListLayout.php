@@ -28,7 +28,6 @@ class WorkflowListLayout extends Table
      */
     protected function columns(): iterable
     {
-        // dd((fn(Workflow $workflow) => $workflow->companyName->company_name));
         return [
             TD::make('name', __('Name'))
                 ->sort()

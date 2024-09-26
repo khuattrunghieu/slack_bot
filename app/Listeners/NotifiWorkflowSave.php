@@ -7,6 +7,8 @@ use App\Notifications\WorkflowCreated;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Notification;
+use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Auth;
 
 class NotifiWorkflowSave
 {
@@ -23,7 +25,9 @@ class NotifiWorkflowSave
      */
     public function handle(WorkflowSave $event): void
     {
-        Notification::route('slack', env('SLACK_BOT_USER_DEFAULT_CHANNEL'))
-        ->notify(new (WorkflowCreated::class));
+        $channelName = $event->workflow->channel;
+        $user = Auth::user();
+        Notification::send($user, new WorkflowCreated($channelName));
     }
+
 }

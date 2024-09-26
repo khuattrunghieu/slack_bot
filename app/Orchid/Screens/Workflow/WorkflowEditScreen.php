@@ -2,6 +2,7 @@
 
 namespace App\Orchid\Screens\Workflow;
 
+use App\Events\WorkflowSave;
 use App\Models\Workflow;
 use App\Orchid\Layouts\Workflow\WorkflowEditLayout;
 use Orchid\Screen\Screen;
@@ -73,6 +74,7 @@ class WorkflowEditScreen extends Screen
     public function save(Request $request, Workflow $workflow)
     {
         $workflow->forceFill($request->get('workflow'))->save();
+        event(new WorkflowSave($workflow));
         Toast::info(__('Workflow was saved'));
         return redirect()->route('platform.systems.workflows');
     }
