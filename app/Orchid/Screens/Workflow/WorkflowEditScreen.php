@@ -10,7 +10,7 @@ use Orchid\Screen\Actions\Button;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 
 class WorkflowEditScreen extends Screen
 {
@@ -73,9 +73,19 @@ class WorkflowEditScreen extends Screen
     }
     public function save(Request $request, Workflow $workflow)
     {
-        $workflow->forceFill($request->get('workflow'))->save();
-        event(new WorkflowSave($workflow));
-        Toast::info(__('Workflow was saved'));
+        DB::beginTransaction();
+        try {
+            $workflow->forceFill($request->get('workflow'))->save();
+            event(new WorkflowSave($workflow));
+            DB::commit();
+            Toast::info(__('Workflow was saved'));
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            logger('Có lỗi xảy ra: ' . $e->getMessage());
+            Toast::error(__('Channel đã tồn tại. Vui lòng nhập lại Channel khác'));
+            return back()->withInput();
+        }
         return redirect()->route('platform.systems.workflows');
     }
 

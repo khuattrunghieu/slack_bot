@@ -7,7 +7,6 @@ use App\Notifications\WorkflowCreated;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Notification;
-use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Auth;
 
 class NotifiWorkflowSave
