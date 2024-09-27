@@ -29,6 +29,10 @@ class WorkflowListLayout extends Table
     protected function columns(): iterable
     {
         return [
+            TD::make('id', __('ID'))
+                ->sort()
+                ->cantHide()
+                ->render(fn(Workflow $workflow) => $workflow->id),
             TD::make('name', __('Name'))
                 ->sort()
                 ->cantHide()
