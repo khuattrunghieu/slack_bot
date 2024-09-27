@@ -75,8 +75,19 @@ class WorkflowEditScreen extends Screen
     {
         DB::beginTransaction();
         try {
-            $workflow->forceFill($request->get('workflow'))->save();
-            event(new WorkflowSave($workflow));
+            $new = is_null($workflow->id);
+            $data = $request->get('workflow');
+            if ($new) {
+                $workflow->forceFill($data)->save();
+                event(new WorkflowSave($workflow));
+            } else {
+                if($workflow->channel == $data['channel']) {
+                    $workflow->forceFill($data)->save();
+                } else {
+                    $workflow->forceFill($data)->save();
+                    event(new WorkflowSave($workflow));
+                }
+            }
             DB::commit();
             Toast::info(__('Workflow was saved'));
 

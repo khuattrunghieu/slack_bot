@@ -8,7 +8,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Slack\SlackMessage;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Log;
-class WorkflowCreated extends Notification
+class WorkflowCreated extends Notification  implements ShouldQueue
 {
     use Queueable;
     protected $channelName;
